@@ -162,6 +162,27 @@ lib/
 
 The application currently demonstrates the UI and workflow with static data (20 hardcoded sample tasks). The add, update, and delete functions are connected to the UI but are not yet fully implemented with persistent data storage.
 
+## ⚠️ Limitations
+
+The current version of the ToDo App has the following limitations:
+
+- **No Data Persistence**: Tasks are not saved to local or cloud storage. Upon app restart, all data is lost.
+- **Static Task List**: Currently displays 20 hardcoded sample tasks that cannot be modified or removed permanently.
+- **Non-Functional Operations**: While add, update, and delete buttons are present in the UI, their backend logic is not implemented.
+- **No Task Filtering**: Cannot search, sort, or filter tasks by status, date, or priority.
+- **No User Accounts**: No authentication system or user accounts. Cannot sync data across devices.
+- **Limited Date & Time Features**: Task dates are hardcoded and cannot be dynamically set or changed.
+- **No Notifications**: No reminder or notification system for upcoming or overdue tasks.
+- **Single List View**: Only displays one static list; cannot organize tasks by category or project.
+- **No Offline Sync**: Cannot sync when offline or fetch cloud data when internet is restored.
+- **Basic Error Handling**: Minimal error handling and user feedback mechanisms.
+- **No Task Details**: No ability to add descriptions, attachments, or extended details to tasks.
+- **Mobile-First Only**: Minimal responsive design for larger screens (tablets, desktops).
+- **No Accessibility Features**: Limited support for screen readers and accessibility options.
+- **No Export/Import**: Cannot export tasks or import from external sources.
+
+These limitations will be addressed in future versions as development continues.
+
 ## 🎨 Design Highlights
 
 - **Color Scheme**: Blue primary color with white text
