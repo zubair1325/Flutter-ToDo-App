@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './add_new_task_modal.dart';
+import 'package:todo_app/task.dart';
+import 'add_new_task_modal.dart';
 import 'update_task_modal.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _MainState extends State<HomePage> {
+  List<Task> taskList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +23,10 @@ class _MainState extends State<HomePage> {
       ),
 
       body: ListView.separated(
-        itemCount: 20,
-        padding: EdgeInsets.all(25),
+        itemCount: taskList.length,
         itemBuilder: (context, index) {
           return ListTile(
+            hoverColor: const Color.fromARGB(255, 238, 231, 231),
             onTap: () {
               showDialog(
                 context: context,
@@ -40,7 +43,13 @@ class _MainState extends State<HomePage> {
                               isDismissible: false,
                               context: context,
                               builder: (builder) {
-                                return UpdateTaskModal();
+                                return UpdateTaskModal(
+                                  task: taskList[index],
+                                  onTodoUpdate: (String updatedDetailsText) {
+                                    updateTodo(index, updatedDetailsText);
+                                    Navigator.pop(context);
+                                  },
+                                );
                               },
                             );
                           },
@@ -50,6 +59,7 @@ class _MainState extends State<HomePage> {
                         Divider(height: 0),
                         ListTile(
                           onTap: () {
+                            deleteTodo(index);
                             Navigator.pop(context);
                           },
                           leading: Icon(Icons.delete),
@@ -61,10 +71,26 @@ class _MainState extends State<HomePage> {
                 },
               );
             },
-            title: Text("Do Code and complect the pending projects"),
-            subtitle: Text("12-5-2023"),
-            trailing: Text("Pending"),
-            leading: CircleAvatar(child: Text("${index + 1}")),
+            onLongPress: () {
+              String corrStatus = taskList[index].status.trim() == "pending"
+                  ? "done"
+                  : "pending";
+              taskList[index].status = corrStatus;
+              setState(() {});
+            },
+            title: Text(taskList[index].details),
+            subtitle: Text(taskList[index].createDateTime.toString()),
+            trailing: Text(
+              taskList[index].status,
+              style: taskList[index].status.trim() == "done"
+                  ? TextStyle(color: Colors.blue)
+                  : null,
+            ),
+            leading: CircleAvatar(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              child: Text("${index + 1}"),
+            ),
           );
         },
         separatorBuilder: (context, index) {
@@ -80,12 +106,37 @@ class _MainState extends State<HomePage> {
             isDismissible: false,
             context: context,
             builder: (builder) {
-              return AddNewTaskModal();
+              return AddNewTaskModal(
+                onAddTap: (Task task) {
+                  addTask(task);
+                },
+              );
             },
           );
         },
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void addTask(Task task) {
+    taskList.add(task);
+    setState(() {});
+  }
+
+  void deleteTodo(int index) {
+    taskList.removeAt(index);
+    setState(() {});
+  }
+
+  void updateTodo(int index, String todoDetails) {
+    taskList[index].details = todoDetails;
+    taskList[index].status = "pending";
+    setState(() {});
+  }
+
+  void updateTodoStatus(int index, String status) {
+    taskList[index].status = status;
+    setState(() {});
   }
 }
